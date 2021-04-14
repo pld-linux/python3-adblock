@@ -55,6 +55,7 @@ EOF
 CARGO_HOME="$(pwd)/.cargo" \
 CARGO_NET_OFFLINE=true \
 CARGO_TERM_VERBOSE=true \
+%{?__jobs:CARGO_BUILD_JOBS="%{__jobs}"} \
 RUSTFLAGS="%{rpmrustflags}" \
 /usr/bin/maturin build --release --no-sdist \
 %ifarch x32
