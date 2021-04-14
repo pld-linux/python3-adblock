@@ -52,11 +52,14 @@ directory = '$PWD/vendor'
 EOF
 
 %build
-CARGO_HOME="$(pwd)/.cargo" \
-CARGO_NET_OFFLINE=true \
-CARGO_TERM_VERBOSE=true \
-%{?__jobs:CARGO_BUILD_JOBS="%{__jobs}"} \
-RUSTFLAGS="%{rpmrustflags}" \
+export CARGO_HOME="$(pwd)/.cargo"
+export CARGO_NET_OFFLINE=true
+export CARGO_TERM_VERBOSE=true
+%{?__jobs:export CARGO_BUILD_JOBS="%{__jobs}"}
+export RUSTFLAGS="%{rpmrustflags}"
+%ifarch %{ix86}
+export RUSTFLAGS="$RUSTFLAGS -C opt-level=1"
+%endif
 /usr/bin/maturin build --release --no-sdist \
 %ifarch x32
 	--target x86_64-unknown-linux-gnux32
