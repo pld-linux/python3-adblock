@@ -22,6 +22,12 @@ BuildRequires:	rust >= 1.45
 ExclusiveArch:	%{rust_arches}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
+%ifarch x32
+%define		cargo_outdir	target/x86_64-unknown-linux-gnux32
+%else
+%define		cargo_outdir	target
+%endif
+
 %description
 Python wrapper for Brave's adblocking library, which is written in
 Rust.
@@ -59,7 +65,7 @@ RUSTFLAGS="%{rpmrustflags}" \
 rm -rf $RPM_BUILD_ROOT
 
 install -d $RPM_BUILD_ROOT%{py3_sitedir}
-cp -p target/release/libadblock.so $RPM_BUILD_ROOT%{py3_sitedir}/%{module}.so
+cp -p %{cargo_outdir}/release/libadblock.so $RPM_BUILD_ROOT%{py3_sitedir}/%{module}.so
 
 %clean
 rm -rf $RPM_BUILD_ROOT
