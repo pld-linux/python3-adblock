@@ -1,17 +1,17 @@
-%define		crates_ver	0.4.4
+%define		crates_ver	0.5.0
 %define 	module	adblock
 
 Summary:	Brave's adblock library in Python
 Name:		python3-%{module}
-Version:	0.4.4
+Version:	0.5.0
 Release:	1
 License:	MIT or Apache v2.0
 Group:		Libraries/Python
 Source0:	https://files.pythonhosted.org/packages/source/a/adblock/%{module}-%{version}.tar.gz
-# Source0-md5:	6958de33e5034c1241a69c91989f0e86
+# Source0-md5:	1183beaf1e82e16fae7a797e57de013f
 # ./create-crates.sh
 Source1:	%{name}-crates-%{crates_ver}.tar.xz
-# Source1-md5:	932c699a7fa6016098e56026ae389322
+# Source1-md5:	da4deea3a344332cf913d942843e8ee7
 URL:		https://github.com/ArniDagur/python-adblock
 BuildRequires:	cargo
 BuildRequires:	maturin >= 0.10
