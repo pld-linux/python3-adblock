@@ -17,18 +17,12 @@ BuildRequires:	cargo
 BuildRequires:	maturin >= 0.10
 BuildRequires:	python3-devel >= 1:3.6
 BuildRequires:	rpm-pythonprov
-BuildRequires:	rpmbuild(macros) >= 2.004
+BuildRequires:	rpmbuild(macros) >= 2.012
 BuildRequires:	rust >= 1.45
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
 ExclusiveArch:	%{rust_arches}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-
-%ifarch x32
-%define		cargo_outdir	target/x86_64-unknown-linux-gnux32
-%else
-%define		cargo_outdir	target
-%endif
 
 %description
 Python wrapper for Brave's adblocking library, which is written in
@@ -63,15 +57,13 @@ export RUSTFLAGS="%{rpmrustflags}"
 export RUSTFLAGS="$RUSTFLAGS -C opt-level=1"
 %endif
 /usr/bin/maturin build --release --no-sdist \
-%ifarch x32
-	--target x86_64-unknown-linux-gnux32
-%endif
+	--target %{rust_target}
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
 install -d $RPM_BUILD_ROOT%{py3_sitedir}
-cp -p %{cargo_outdir}/release/libadblock.so $RPM_BUILD_ROOT%{py3_sitedir}/%{module}.so
+cp -p %{cargo_objdir}/libadblock.so $RPM_BUILD_ROOT%{py3_sitedir}/%{module}.so
 
 %clean
 rm -rf $RPM_BUILD_ROOT
